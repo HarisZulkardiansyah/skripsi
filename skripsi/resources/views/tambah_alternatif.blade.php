@@ -1,16 +1,35 @@
 @extends('layout.main')
 
 @section('content')
-    <br/>
+    <br />
     <form method="POST" action="{{ url('alternatif') }}">
-        @csrf 
-        @include('layout.form_editalternatif')
-        {{-- Nama: <input type="text" name="nama_alternatif"><br>
-        Sanksi Berorganisasi: <input type="text" name="sanksi_berorganisasi"><br>
-        Status Keanggotaan: <input type="text" name="status_keanggotaan"><br>
-        Keaktifan: <input type="text" name="keaktifan"><br>
-        Pengalaman: <input type="text" name="pengalaman"><br>
-        IJDK: <input type="text" name="ijdk"><br>
-        <button type=""> SIMPAN</button> --}}
+
+        @csrf
+        <div class="row clearfix">
+            <div class="col-md-6">Nama Alternatif</div>
+
+            <div class="col-md-6">
+                <input class="form-control" type="text" name="nama_alternatif">
+                @foreach ($errors->get('nama_alternatif') as $msg)
+                    <p class="text-danger">{{ $msg }}</p>
+                @endforeach
+            </div>
+        </div>
+
+        @foreach ($kriteria as $key_kriteria)
+            <div class="row clearfix">
+                <div class="col-md-6">{{ $key_kriteria->nama }}</div>
+                <div class="col-md-6">
+                    <input class="form-control" type="number" name="{{ $key_kriteria->nama }}"
+                        value="{{ $key_kriteria->nilai }}">
+                    @foreach ($errors->get($key_kriteria->nama) as $msg)
+                        <p class="text-danger">{{ $msg }}</p>
+                    @endforeach
+                </div>
+            </div>
+        @endforeach
+
+
+        <button type="submit" class="btn btn-primary">SIMPAN</button>
     </form>
 @endsection

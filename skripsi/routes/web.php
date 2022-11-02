@@ -36,7 +36,10 @@ Route::get('/perhitungan', function () {
         "title" => 'perhitungan'
     ]);
 });
+
+// Success
 Route::resource('kriteria', KriteriaController::class)->middleware('auth');
+//
 Route::resource('alternatif', AlternatifController::class)->middleware('auth');
 
 route::get('/login',[LoginController::class,'index'])->name('login')->middleware('guest');

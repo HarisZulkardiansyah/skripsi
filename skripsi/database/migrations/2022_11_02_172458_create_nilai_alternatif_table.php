@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAdminsTable extends Migration
+class CreateNilaiAlternatifTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateAdminsTable extends Migration
      */
     public function up()
     {
-        Schema::create('admins', function (Blueprint $table) {
+        Schema::create('nilai_alternatif', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_kriteria');
+            $table->integer('id_user');
+            $table->integer('nilai');
             $table->timestamps();
-                $table->String('name');
-                $table->String('email')->unique();
-                $table->String('password');
         });
     }
 
@@ -29,6 +29,6 @@ class CreateAdminsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('admins');
+        Schema::dropIfExists('nilai_alternatif');
     }
 }

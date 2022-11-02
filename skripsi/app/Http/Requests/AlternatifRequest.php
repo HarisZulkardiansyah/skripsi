@@ -24,13 +24,7 @@ class AlternatifRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama_alternatif'=>'required',
-            'sanksi_berorganisasi'=>'required',
-            'status_keanggotaan'=>'required',
-            'keaktifan'=>'required',
-            'pengalaman'=>'required',
-            'ijdk'=>'required'
-
+            'nama_alternatif'=>'required'
         ];
     }
 }

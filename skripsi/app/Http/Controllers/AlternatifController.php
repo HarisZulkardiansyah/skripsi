@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\AlternatifRequest;
 use App\Models\alternatif;
+use App\Models\Kriteria;
+use App\Models\NilaiAlternatif;
 
 class AlternatifController extends Controller
 {
@@ -14,10 +16,10 @@ class AlternatifController extends Controller
      */
     public function index()
     {
-        $data = alternatif::all();
-        return view('alternatif', compact(
-            'data'
-        ));
+        $alternatif = alternatif::all();
+        $kriteria = Kriteria::all();
+        return view('alternatif', ['kriteria'=>$kriteria,'alternatif'=>$alternatif]
+        );
     }
     /**
      * Show the form for creating a new resource.
@@ -26,10 +28,9 @@ class AlternatifController extends Controller
      */
     public function create()
     {
-        $model = new alternatif;
-        return view('tambah_alternatif', compact(
-            'model'
-        ));
+        $kriteria = Kriteria::all();
+        $alternatif = Alternatif::all();
+        return view('tambah_alternatif', ['kriteria'=>$kriteria,'alternatif'=>$alternatif]);
     }
 
     /**
@@ -38,18 +39,21 @@ class AlternatifController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AlternatifRequest $request)
+    public function store(Request $request)
     {
-        $model = new alternatif;
-        $model->nama_alternatif = $request->nama_alternatif;
-        $model->sanksi_berorganisasi = $request->sanksi_berorganisasi;
-        $model->status_keanggotaan = $request->status_keanggotaan;
-        $model->keaktifan = $request->keaktifan;
-        $model->pengalaman = $request->pengalaman;
-        $model->ijdk = $request->ijdk;
 
-        $model->save();
-        return redirect('alternatif')->with('success',"Data Berhasil Disimpan");
+        $data = new alternatif;
+        $data->nama_alternatif = $request->nama_alternatif;
+        $data->save();
+        foreach (Kriteria::all() as $kriteria) {
+            $flight = NilaiAlternatif::create([
+                'id_kriteria' => $kriteria->id,
+                'id_user' => $data->id,
+                'nilai' => $request->input(str_replace(' ', '_', $kriteria->nama)),
+            ]);
+        }
+        return "berhasil";
+        // return redirect('alternatif')->with('success',"Data Berhasil Disimpan");
     }
 
     /**

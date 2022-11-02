@@ -15,13 +15,7 @@ class alternatif extends Migration
     {
         Schema::create('alternatif', function (Blueprint $table) {
             $table->id();
-            
             $table->string('nama_alternatif');
-            $table->integer('sanksi_berorganisasi');
-            $table->integer('status_keanggotaan');
-            $table->integer('keaktifan');
-            $table->integer('pengalaman');
-            $table->integer('ijdk');
             $table->timestamps();
         });
     }

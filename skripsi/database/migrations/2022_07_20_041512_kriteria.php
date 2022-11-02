@@ -14,8 +14,7 @@ class Kriteria extends Migration
     public function up()
     {
         Schema::create('kriteria', function (Blueprint $table) {
-            $table->id('id Kriteria'); //id, primary key, auto increment
-
+            $table->id(); //id, primary key, auto increment
             $table->string('nama');
             $table->String('atribut');
 
