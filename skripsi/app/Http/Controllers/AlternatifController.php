@@ -18,8 +18,8 @@ class AlternatifController extends Controller
     {
         $alternatif = alternatif::all();
         $kriteria = Kriteria::all();
-        return view('alternatif', ['kriteria'=>$kriteria,'alternatif'=>$alternatif]
-        );
+        $nilai_alternatif = NilaiAlternatif::all();
+        return view('alternatif', ['kriteria'=>$kriteria,'alternatif'=>$alternatif,'nilai_alternatif'=>$nilai_alternatif]);
     }
     /**
      * Show the form for creating a new resource.
