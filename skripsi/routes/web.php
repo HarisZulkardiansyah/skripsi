@@ -1,12 +1,14 @@
 <?php
 
-use App\Http\Controllers\AlternatifController;
-use App\Http\Controllers\KriteriaController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\BobotAhp;
 use Doctrine\DBAL\Driver\Middleware;
 use Illuminate\Support\Facades\Route; 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\BobotAhpController;
+use App\Http\Controllers\KriteriaController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\AlternatifController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +41,9 @@ Route::get('/perhitungan', function () {
 
 // Success
 Route::resource('kriteria', KriteriaController::class)->middleware('auth');
+Route::get('/bobot-ahp', [BobotAhpController::class,'index'])->name('bobot_ahp')->middleware('auth');
+Route::post('/bobot-ahp-store', [BobotAhpController::class,'store'])->name('bobot_ahp_up')->middleware('auth');
+
 //
 Route::resource('alternatif', AlternatifController::class)->middleware('auth');
 

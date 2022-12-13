@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use App\Http\Requests\AlternatifRequest;
-use App\Models\alternatif;
 use App\Models\Kriteria;
+use App\Models\alternatif;
+use Illuminate\Http\Request;
 use App\Models\NilaiAlternatif;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\AlternatifRequest;
 
 class AlternatifController extends Controller
 {
@@ -18,8 +19,8 @@ class AlternatifController extends Controller
     {
         $alternatif = alternatif::all();
         $kriteria = Kriteria::all();
-        return view('alternatif', ['kriteria'=>$kriteria,'alternatif'=>$alternatif]
-        );
+        $nilai_alternatif = NilaiAlternatif::all();
+        return view('alternatif', ['kriteria'=>$kriteria,'alternatif'=>$alternatif,'nilai_alternatif'=>$nilai_alternatif]);
     }
     /**
      * Show the form for creating a new resource.
@@ -52,8 +53,7 @@ class AlternatifController extends Controller
                 'nilai' => $request->input(str_replace(' ', '_', $kriteria->nama)),
             ]);
         }
-        return "berhasil";
-        // return redirect('alternatif')->with('success',"Data Berhasil Disimpan");
+        return redirect('alternatif')->with('success',"Data Berhasil Disimpan");
     }
 
     /**
@@ -75,10 +75,10 @@ class AlternatifController extends Controller
      */
     public function edit($id)
     {
-        $model = alternatif::find($id);
-        return view('edit_alternatif',compact(
-            'model'
-        ));
+        $alternatif = alternatif::where('id',$id)->first();
+        $kriteria = Kriteria::all();
+        $nilai_alternatif = NilaiAlternatif::where('id_user', $id)->get();
+        return view('edit_alternatif', ['kriteria'=>$kriteria,'alternatif'=>$alternatif,'nilai_alternatif'=>$nilai_alternatif]);
     }
 
     /**
@@ -88,17 +88,22 @@ class AlternatifController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(AlternatifRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $model = alternatif::find($id);
-        $model->nama_alternatif = $request->nama_alternatif;
-        $model->sanksi_berorganisasi = $request->sanksi_berorganisasi;
-        $model->status_keanggotaan = $request->status_keanggotaan;
-        $model->keaktifan = $request->keaktifan;
-        $model->pengalaman = $request->pengalaman;
-        $model->ijdk = $request->ijdk;
-        $model->save();
-        return redirect('alternatif')->with('success',"Data Berhasil diUpdate");
+        $alternatif = alternatif::find($id);
+        $alternatif->nama_alternatif = $request->nama_alternatif;
+        $alternatif->save();
+        foreach (Kriteria::all() as $kriteria) {
+
+            $temp = NilaiAlternatif::where('id_user', $id)
+            ->where('id_kriteria',$kriteria->id)
+            ->update([
+                'id_kriteria' => $kriteria->id,
+                'id_user' => $id,
+                'nilai' => $request->input(str_replace(' ', '_', $kriteria->nama)),
+            ]);  
+        }
+        return redirect('alternatif')->with('success',"Data Berhasil Di-update");
     }
 
     /**
@@ -109,8 +114,9 @@ class AlternatifController extends Controller
      */
     public function destroy($id)
     {
-        $model = alternatif::find($id);
-        $model->delete();
+        $alternatif = alternatif::find($id);
+        $alternatif->delete();
+        $deleted = DB::table('nilai_alternatif')->where('id_user', $id)->delete();
         return redirect('alternatif')->with('success',"Data Berhasil Dihapus");
     }
 }
