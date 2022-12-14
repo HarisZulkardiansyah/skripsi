@@ -37,9 +37,9 @@
                             </thead>
 
                             <tbody>
-                                <?php $total = 0; ?>
                                 @for ($i = 0; $i < count($nama_kriteria); $i++)
                                     <?php $kode = 1; ?>
+                                    <?php $total = 0; ?>
                                     <tr>
                                         <th>{{ $nama_kriteria[$i] }}</th>
                                         @foreach ($bobot_ahp as $item_ahp)
@@ -47,8 +47,8 @@
                                                 @if ($item_ahp->id_kriteria1 == $id_kriteria[$i] && $item_ahp->id_kriteria2 == $id_kriteria[$i])
                                                     <th class="bg-success text-white">{{ $item_ahp->skala_pembanding }}</th>
                                                 @elseif(($item_ahp->id_kriteria2 == $id_kriteria[$i] > $item_ahp->id_kriteria1) == $id_kriteria[$i])
-                                                    <?php $total += 1 / $item_ahp->skala_pembanding; ?>
-                                                    <th>{{ 1 / $item_ahp->skala_pembanding }}</th>
+                                                    <?php $total += number_format(1 / $item_ahp->skala_pembanding, 2); ?>
+                                                    <th>{{ number_format(1 / $item_ahp->skala_pembanding, 2) }}</th>
                                                     <?php $kode++; ?>
                                                 @else
                                                     <th class="bg-danger text-white">{{ $item_ahp->skala_pembanding }}</th>
@@ -57,14 +57,21 @@
                                             @endif
                                         @endforeach
                                     </tr>
-                                    <?php $rank = [
-                                        'total' => $total,
-                                    ]; ?>
                                 @endfor
-                                <th>Total</th>
-                                @foreach ($rank as $item_total)
-                                    <th>{{ $item_total['total'] }}</th>
+                                <?php $total2 = 0; ?>
+                                @foreach ($bobot_ahp as $item_ahp)
+                                    @if ($item_ahp->id_kriteria1 == 6)
+                                        @if ($item_ahp->id_kriteria1 == 6 && $item_ahp->id_kriteria2 == 6)
+                                            <?php $total2 += 1; ?>
+                                        @elseif(($item_ahp->id_kriteria2 == 6 > $item_ahp->id_kriteria1) == 6)
+                                            <?php $total2 += number_format(1 / $item_ahp->skala_pembanding, 2); ?>
+                                        @else
+                                            <?php $total2 += 1 / $item_ahp->skala_pembanding; ?>
+                                        @endif
+                                    @endif
                                 @endforeach
+                                <th>Total</th>
+                                <th>{{ $total2 }}</th>
                             </tbody>
                         </table>
                     </div>
