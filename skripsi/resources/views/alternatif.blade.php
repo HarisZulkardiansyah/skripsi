@@ -13,19 +13,18 @@
                     @foreach ($kriteria as $item)
                         <th scope="col">{{ $item->nama }}</th>
                     @endforeach
-                    <th class=" text-center"> AKSI </th>
+                    <th colspan="2" class=" text-center"> AKSI </th>
                 </tr>
 
                 @foreach ($alternatif as $value)
                     <tr>
                         <td>{{ $value->nama_alternatif }}</td>
-                        @foreach ($nilai_alternatif as $item)
-                            @if ($value->id == $item->id_user)
-                                <td>{{ $item->nilai }}</td>
-                            @endif
-                        @endforeach
-                        <td><a class="btn btn-info" href="{{ url('alternatif/' . $value->id . '/edit') }}"> Update</a>
-                        </td>
+                        <td>{{ $value->sanksi_berorganisasi }}</td>
+                        <td>{{ $value->status_keanggotaan }}</td>
+                        <td>{{ $value->keaktifan }}</td>
+                        <td>{{ $value->pengalaman }}</td>
+                        <td>{{ $value->ijdk }}</td>
+                        <td><a class="btn btn-info" href="{{ url('alternatif/' . $value->id . '/edit') }}"> Update</a></td>
                         <td class="text-center">
                             <form action="{{ url('alternatif/' . $value->id) }}" method="POST">
                                 @csrf
