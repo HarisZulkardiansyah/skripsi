@@ -1,39 +1,17 @@
 @extends('layout.main')
 
 @section('content')
-    <br />
-    <form method="POST" action="{{ url('alternatif/' . $alternatif->id) }}">
-        @csrf
-        @method('patch')
-        <div class="row clearfix">
-            <div class="col-md-6">Nama Alternatif</div>
-
-            <div class="col-md-6">
-                <input class="form-control" type="text" name="nama_alternatif" value="{{ $alternatif->nama_alternatif }}">
-                @foreach ($errors->get('nama_alternatif') as $msg)
-                    <p class="text-danger">{{ $msg }}</p>
-                @endforeach
-            </div>
-        </div>
-
-        @foreach ($kriteria as $key_kriteria)
-            @foreach ($nilai_alternatif as $key_na)
-                @if ($key_kriteria->id == $key_na->id_kriteria)
-                    <div class="row clearfix">
-                        <div class="col-md-6">{{ $key_kriteria->nama }}</div>
-                        <div class="col-md-6">
-                            <input class="form-control" type="number" name="{{ $key_kriteria->nama }}"
-                                value="{{ $key_na->nilai }}">
-                            @foreach ($errors->get($key_kriteria->nama) as $msg)
-                                <p class="text-danger">{{ $msg }}</p>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
-            @endforeach
-        @endforeach
-
-
-        <button type="submit" class="btn btn-primary">SIMPAN</button>
+    <br/>
+    <form method="POST" action="{{ url('alternatif/'.$model->id) }}">
+        @csrf 
+        <input type= "hidden" name="_method" value="PATCH">
+        @include('layout.form_editalternatif')
+        {{-- Nama : <input type="text" name="nama_alternatif" value="{{$model->nama_alternatif}}"><br><br>
+        Sanksi Berorganisasi: <input type="integer" name="sanksi_berorganisasi" value="{{$model->sanksi_berorganisasi}}"><br><br>
+        Status Keanggotaan: <input type="integer" name="status_keanggotaan" value="{{$model->status_keanggotaan}}"><br><br>
+        Keaktifan: <input type="integer" name="keaktifan" value="{{$model->keaktifan}}"><br><br>
+        Pengalaman: <input type="integer" name="pengalaman" value="{{$model->pengalaman}}"><br><br>
+        IJDK: <input type="integer" name="ijdk" value="{{$model->ijdk}}"><br><br>
+        <button type="submit"> SIMPAN</button> --}}
     </form>
 @endsection
