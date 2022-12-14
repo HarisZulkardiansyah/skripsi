@@ -9,6 +9,7 @@ use App\Http\Controllers\BobotAhpController;
 use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\AlternatifController;
+use App\Http\Controllers\PerangkinganController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,8 @@ Route::get('/perhitungan', function () {
 Route::resource('kriteria', KriteriaController::class)->middleware('auth');
 Route::get('/bobot-ahp', [BobotAhpController::class,'index'])->name('bobot_ahp')->middleware('auth');
 Route::post('/bobot-ahp-store', [BobotAhpController::class,'store'])->name('bobot_ahp_up')->middleware('auth');
+//Ranking
+Route::get('/ranking',[PerangkinganController::class,'index'])->name('ranking')->middleware('auth');
 
 //
 Route::resource('alternatif', AlternatifController::class)->middleware('auth');

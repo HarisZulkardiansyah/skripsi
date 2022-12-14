@@ -93,18 +93,18 @@
 
             <tbody>
                 @for ($i = 0; $i < count($nama_kriteria); $i++)
-                    <?php $kode = 0; ?>
+                    <?php $kode = 1; ?>
                     <tr>
                         <th>{{ $nama_kriteria[$i] }}</th>
                         @foreach ($bobot_ahp as $item_ahp)
                             @if ($item_ahp->id_kriteria1 == $id_kriteria[$i] || $item_ahp->id_kriteria2 == $id_kriteria[$i])
                                 @if ($item_ahp->id_kriteria1 == $id_kriteria[$i] && $item_ahp->id_kriteria2 == $id_kriteria[$i])
                                     <th class="bg-success text-white">{{ $item_ahp->skala_pembanding }}</th>
-                                @elseif($item_ahp)
+                                @elseif(($item_ahp->id_kriteria2 == $id_kriteria[$i] > $item_ahp->id_kriteria1) == $id_kriteria[$i])
                                     <th>{{ 1 / $item_ahp->skala_pembanding }}</th>
                                     <?php $kode++; ?>
                                 @else
-                                    <th class="bg-danger">{{ $item_ahp->skala_pembanding }}</th>
+                                    <th class="bg-danger text-white">{{ $item_ahp->skala_pembanding }}</th>
                                     <?php $kode--; ?>
                                 @endif
                             @endif
